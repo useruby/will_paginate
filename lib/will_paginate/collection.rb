@@ -90,7 +90,12 @@ module WillPaginate
     
     # sets the <tt>total_entries</tt> property and calculates <tt>total_pages</tt>
     def total_entries=(number)
-      @total_entries = number.to_i
+      if number.is_a? Hash
+        @total_entries = number.values.inject {|sum, item| sum += item.to_i}
+      else
+        @total_entries = number.to_i
+      end
+
       @total_pages   = (@total_entries / per_page.to_f).ceil
     end
 
